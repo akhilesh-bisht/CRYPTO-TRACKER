@@ -1,6 +1,6 @@
 import cron from "node-cron";
 import axios from "axios";
-import HistoricalCoin from "../models/historicalCoin.model.js";
+import HistoricalCoin from "../models/History.model.js";
 
 export const startCoinHistoryCron = () => {
   // Runs every 1 HOURS 

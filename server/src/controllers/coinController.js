@@ -1,6 +1,6 @@
 import axios from "axios";
 import CurrentCoin from "../models/CurrentCoin.model.js";
-import HistoricalCoin from "../models/historicalCoin.model.js";
+import HistoricalCoin from "../models/History.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 
