@@ -9,39 +9,21 @@ import { ApiError } from "../utils/ApiError.js";
  
 export const getCoins = async (req, res) => {
   try {
-    const { data } = await axios.get(
-      "https://api.coingecko.com/api/v3/coins/markets",
-      {
-        params: {
-          vs_currency: "usd",
-          order: "market_cap_desc",
-          per_page: 10,
-          page: 1,
-        },
-      }
-    );
+    const coins = await CurrentCoin.find().limit(10).sort({ marketCap: -1 });
 
-    await CurrentCoin.deleteMany({});
-
-    await CurrentCoin.insertMany(
-      data.map((coin) => ({
-        coinId: coin.id,
-        name: coin.name,
-        symbol: coin.symbol,
-        price: coin.current_price,
-        marketCap: coin.market_cap,
-        change24h: coin.price_change_percentage_24h,
-        timestamp: coin.last_updated,
-      }))
-    );
-
-    return res
-      .status(200)
-      .json(new ApiResponse(200, "Coins fetched successfully", data));
+    return res.status(200).json({
+      statusCode: 200,
+      success: true,
+      message: "Coins fetched from DB",
+      data: coins,
+    });
   } catch (err) {
-    return res
-      .status(500)
-      .json(new ApiError(500, "Failed to fetch coins", [err.message]));
+    return res.status(500).json({
+      statusCode: 500,
+      success: false,
+      message: "Failed to fetch coins from DB",
+      errors: [err.message],
+    });
   }
 };
 
