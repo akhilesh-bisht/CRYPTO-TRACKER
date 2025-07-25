@@ -26,6 +26,8 @@ const Dashboard = () => {
   const [order, setOrder] = useState("desc");
   const [loading, setLoading] = useState(true);
 
+  console.log(coins);
+
   const navigate = useNavigate();
 
   // Fetch coin data on component mount and refresh every 30 minutes
@@ -150,36 +152,48 @@ const Dashboard = () => {
             <TableBody>
               {filteredCoins.map((coin) => (
                 <TableRow
-                  key={coin.id}
+                  key={coin._id}
                   hover
-                  onClick={() => handleRowClick(coin.id)}
+                  onClick={() => handleRowClick(coin.coinId)}
                   sx={{ cursor: "pointer" }}
                 >
                   <TableCell>
-                    {/* Coin avatar and name */}
                     <div
                       style={{ display: "flex", alignItems: "center", gap: 8 }}
                     >
-                      <Avatar src={coin.image} alt={coin.name} />
+                      {/* No image available, show initials as fallback */}
+                      <Avatar>{coin.symbol?.slice(0, 2).toUpperCase()}</Avatar>
                       <div>
                         <div style={{ fontWeight: 600 }}>{coin.name}</div>
                         <div style={{ fontSize: "0.8rem", color: "#777" }}>
-                          ({coin.symbol.toUpperCase()})
+                          ({coin.symbol?.toUpperCase()})
                         </div>
                       </div>
                     </div>
                   </TableCell>
-                  <TableCell>${coin.current_price.toLocaleString()}</TableCell>
-                  <TableCell>${coin.market_cap.toLocaleString()}</TableCell>
-                  <TableCell
-                    style={{
-                      color: getColor(coin.price_change_percentage_24h),
-                    }}
-                  >
-                    {coin.price_change_percentage_24h.toFixed(2)}%
-                  </TableCell>
+
                   <TableCell>
-                    {new Date(coin.last_updated).toLocaleString()}
+                    {coin.price != null
+                      ? `$${coin.price.toLocaleString()}`
+                      : "N/A"}
+                  </TableCell>
+
+                  <TableCell>
+                    {coin.marketCap != null
+                      ? `$${coin.marketCap.toLocaleString()}`
+                      : "N/A"}
+                  </TableCell>
+
+                  <TableCell style={{ color: getColor(coin.change24h) }}>
+                    {coin.change24h != null
+                      ? `${coin.change24h.toFixed(2)}%`
+                      : "N/A"}
+                  </TableCell>
+
+                  <TableCell>
+                    {coin.timestamp
+                      ? new Date(coin.timestamp).toLocaleString()
+                      : "N/A"}
                   </TableCell>
                 </TableRow>
               ))}
