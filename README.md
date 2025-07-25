@@ -106,11 +106,11 @@ GET	/api/coins/:id/history	Fetch historical data for a coin
 🕒 Cron Job Output
 
 ✅ Final Deliverables
-✅ Live Frontend: https://crypto-dashboard.vercel.app
+✅ Live Frontend: https://crypto-tracker-psi-silk.vercel.app
 
 ✅ Live Backend: https://crypto-api.onrender.com
 
-✅ GitHub: https://github.com/yourusername/crypto-dashboard
+✅ GitHub: https://github.com/akhilesh-bisht/CRYPTO-TRACKER.git
 
 ✅ Screenshots in /assets
 
@@ -135,4 +135,4 @@ Edit
 ---
 
 ✅ You can now save this as `README.md` in your repo root.  
-Need a downloadable file version or help uploading screenshots to `/assets`?
+Need a downloadable file version or help uploading screenshots to `screnshot folder`?
