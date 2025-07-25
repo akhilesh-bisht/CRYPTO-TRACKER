@@ -13,12 +13,13 @@ import {
   TableSortLabel,
   Avatar,
   CircularProgress,
+  Button,
+  Box,
 } from "@mui/material";
 import { getCoins } from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
-  // State declarations
   const [coins, setCoins] = useState([]);
   const [filteredCoins, setFilteredCoins] = useState([]);
   const [search, setSearch] = useState("");
@@ -26,18 +27,20 @@ const Dashboard = () => {
   const [order, setOrder] = useState("desc");
   const [loading, setLoading] = useState(true);
 
-  console.log(coins);
-
   const navigate = useNavigate();
 
-  // Fetch coin data on component mount and refresh every 30 minutes
+  // Logout function
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate("/login");
+  };
+
   useEffect(() => {
     fetchCoins();
-    const interval = setInterval(fetchCoins, 1800000); // 30 mins interval
-    return () => clearInterval(interval); // clear on unmount
+    const interval = setInterval(fetchCoins, 1800000); // 30 mins
+    return () => clearInterval(interval);
   }, []);
 
-  // Fetch coin list from API
   const fetchCoins = async () => {
     try {
       const { data } = await getCoins();
@@ -49,7 +52,6 @@ const Dashboard = () => {
     }
   };
 
-  // Filter coins by name (search input)
   const handleSearch = (e) => {
     const value = e.target.value.toLowerCase();
     setSearch(value);
@@ -59,7 +61,6 @@ const Dashboard = () => {
     setFilteredCoins(filtered);
   };
 
-  // Handle sorting of coin list
   const handleSort = (property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
@@ -79,16 +80,21 @@ const Dashboard = () => {
     setFilteredCoins(sorted);
   };
 
-  // Utility: return color based on 24h price change
   const getColor = (change) => (change >= 0 ? "green" : "red");
 
-  // Navigate to chart page for a specific coin
   const handleRowClick = (id) => {
     navigate(`/coin/${id}`);
   };
 
   return (
     <Container sx={{ mt: 4 }}>
+      {/* Logout Button */}
+      <Box display="flex" justifyContent="flex-end" mb={2}>
+        <Button variant="outlined" color="error" onClick={handleLogout}>
+          Logout
+        </Button>
+      </Box>
+
       {/* Header */}
       <Typography variant="h4" gutterBottom fontWeight="bold" color="primary">
         Top 10 Cryptocurrencies
@@ -104,19 +110,14 @@ const Dashboard = () => {
         sx={{ mb: 3 }}
       />
 
-      {/* Loading spinner */}
       {loading ? (
         <CircularProgress className="relative top-[50%] left-[50%]" />
       ) : (
-        // Table container
         <TableContainer component={Paper} elevation={4}>
           <Table>
-            {/* Table headers */}
             <TableHead>
               <TableRow>
-                <TableCell>
-                  <strong>Coin</strong>
-                </TableCell>
+                <TableCell><strong>Coin</strong></TableCell>
                 <TableCell>
                   <TableSortLabel
                     active={orderBy === "current_price"}
@@ -148,7 +149,6 @@ const Dashboard = () => {
               </TableRow>
             </TableHead>
 
-            {/* Table body with coin rows */}
             <TableBody>
               {filteredCoins.map((coin) => (
                 <TableRow
@@ -158,10 +158,7 @@ const Dashboard = () => {
                   sx={{ cursor: "pointer" }}
                 >
                   <TableCell>
-                    <div
-                      style={{ display: "flex", alignItems: "center", gap: 8 }}
-                    >
-                      {/* No image available, show initials as fallback */}
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <Avatar>{coin.symbol?.slice(0, 2).toUpperCase()}</Avatar>
                       <div>
                         <div style={{ fontWeight: 600 }}>{coin.name}</div>
@@ -173,27 +170,19 @@ const Dashboard = () => {
                   </TableCell>
 
                   <TableCell>
-                    {coin.price != null
-                      ? `$${coin.price.toLocaleString()}`
-                      : "N/A"}
+                    {coin.price != null ? `$${coin.price.toLocaleString()}` : "N/A"}
                   </TableCell>
 
                   <TableCell>
-                    {coin.marketCap != null
-                      ? `$${coin.marketCap.toLocaleString()}`
-                      : "N/A"}
+                    {coin.marketCap != null ? `$${coin.marketCap.toLocaleString()}` : "N/A"}
                   </TableCell>
 
                   <TableCell style={{ color: getColor(coin.change24h) }}>
-                    {coin.change24h != null
-                      ? `${coin.change24h.toFixed(2)}%`
-                      : "N/A"}
+                    {coin.change24h != null ? `${coin.change24h.toFixed(2)}%` : "N/A"}
                   </TableCell>
 
                   <TableCell>
-                    {coin.timestamp
-                      ? new Date(coin.timestamp).toLocaleString()
-                      : "N/A"}
+                    {coin.timestamp ? new Date(coin.timestamp).toLocaleString() : "N/A"}
                   </TableCell>
                 </TableRow>
               ))}

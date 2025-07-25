@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { getCoinHistory } from "../services/api";
 import {
   Container,
@@ -7,7 +7,9 @@ import {
   CircularProgress,
   Paper,
   Box,
+  IconButton,
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import {
   LineChart,
   Line,
@@ -20,10 +22,10 @@ import {
 
 const CoinChart = () => {
   const { coinId } = useParams();
+  const navigate = useNavigate();
   const [history, setHistory] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Fetch coin history when component mounts or coinId changes
   useEffect(() => {
     fetchHistory();
   }, [coinId]);
@@ -32,10 +34,12 @@ const CoinChart = () => {
     try {
       const { data } = await getCoinHistory(coinId);
 
-      // Ensure the data is an array before reversing
       if (Array.isArray(data.data)) {
         const formatted = data.data.reverse().map((entry) => ({
-          time: new Date(entry.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          time: new Date(entry.timestamp).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          }),
           price: entry.price,
         }));
         setHistory(formatted);
@@ -53,10 +57,17 @@ const CoinChart = () => {
 
   return (
     <Container sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom color="primary">
-        {coinId.toUpperCase()} Price History
-      </Typography>
+      {/* Back button */}
+      <Box display="flex" alignItems="center" mb={2}>
+        <IconButton onClick={() => navigate("/dashboard")} color="primary">
+          <ArrowBackIcon />
+        </IconButton>
+        <Typography variant="h5" ml={1} fontWeight="bold">
+          {coinId.toUpperCase()} Price History
+        </Typography>
+      </Box>
 
+      {/* Chart or loading */}
       {loading ? (
         <Box display="flex" justifyContent="center" mt={5}>
           <CircularProgress color="primary" />
