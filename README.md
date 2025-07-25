@@ -91,7 +91,7 @@ cron.schedule("*/30 * * * *", async () => {
 🚀 Deployed Links
 Frontend (Vercel): https://crypto-dashboard.vercel.app
 
-Backend (Render): https://crypto-api.onrender.com
+Backend (Render): https://crypto-tracker-2vyu.onrender.com
 
 🧪 API Endpoints
 Method	Route	Description

@@ -4,7 +4,7 @@ import HistoricalCoin from "../models/History.model.js";
 
 export const startCoinHistoryCron = () => {
   // Runs every 1 HOURS 
-  cron.schedule("* * * * *", async () => {
+  cron.schedule('0 * * * *',  async () => {
     try {
       console.log("⏱Running coin history sync...");
 
