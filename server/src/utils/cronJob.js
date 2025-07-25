@@ -3,10 +3,10 @@ import axios from "axios";
 import HistoricalCoin from "../models/historicalCoin.model.js";
 
 export const startCoinHistoryCron = () => {
-  // Runs every 1 minute for testing
+  // Runs every 1 HOURS 
   cron.schedule("* * * * *", async () => {
     try {
-      console.log("⏱️ Running coin history sync...");
+      console.log("⏱Running coin history sync...");
 
       const { data } = await axios.get(
         "https://api.coingecko.com/api/v3/coins/markets",
@@ -31,9 +31,9 @@ export const startCoinHistoryCron = () => {
       }));
 
       await HistoricalCoin.insertMany(records);
-      console.log("✅ Coin history stored successfully");
+      console.log("Coin history stored successfully");
     } catch (err) {
-      console.error("❌ Cron job error:", err.message);
+      console.error(" Cron job error:", err.message);
     }
   });
 };

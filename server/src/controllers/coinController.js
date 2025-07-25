@@ -4,10 +4,9 @@ import HistoricalCoin from "../models/historicalCoin.model.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { ApiError } from "../utils/ApiError.js";
 
-/**
- * @desc Fetch Top 10 coins and update CurrentCoin collection
- * @route GET /api/coins
- */
+
+//  * @route GET /api/coins
+ 
 export const getCoins = async (req, res) => {
   try {
     const { data } = await axios.get(
@@ -46,11 +45,8 @@ export const getCoins = async (req, res) => {
   }
 };
 
-/**
- * @desc Save current coin snapshot to history (manual/cron)
- * @route POST /api/history
- */
-;
+
+//  * @route POST /api/history
 
 export const storeHistory = async (req, res) => {
   try {
@@ -94,10 +90,9 @@ export const storeHistory = async (req, res) => {
 };
 
 
-/**
- * @desc Get historical data by coinId
- * @route GET /api/history/:coinId
- */
+
+//  * @route GET /api/history/:coinId
+
 export const getHistoryByCoin = async (req, res) => {
   try {
     const { coinId } = req.params;

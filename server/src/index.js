@@ -7,20 +7,26 @@ import { apiLimiter } from "./middlewares/rateLimiter.js";
 
 const PORT = process.env.PORT || 4000;
 
+// API Limit
 
 app.use("/api", apiLimiter);
+
+
+// func for start server
+
 const startServer = async () => {
   await connectDB();
 
   try {
     app.listen(PORT, () => {
-      console.log("🚀 Server started at", PORT);
+      console.log("Server started at", PORT);
     });
 
     // Start cron job
     startCoinHistoryCron();
+    
   } catch (error) {
-    console.error(`❌ Server Error: ${error}`);
+    console.error(`Server Error: ${error}`);
   }
 };
 
