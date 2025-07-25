@@ -1,7 +1,4 @@
 import mongoose from 'mongoose';
-
-
-
 const historicalCoinSchema = new mongoose.Schema({
   coinId: String,
   name: String,
